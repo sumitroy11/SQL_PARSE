@@ -39,9 +39,13 @@ def parse():
     for tbl in table:
         if re.match("(^PRD|^WRK)",tbl):
             prd_table.append(tbl) 
-    
-    df = pd.DataFrame(prd_table)
-    df.rename(columns = {0:'Table Name'}, inplace=True)
+    prd_table = list(set(prd_table))
+    if prd_table != []:
+        df = pd.DataFrame(prd_table)
+        df.rename(columns = {0:'Table Name'}, inplace=True)
+    else:
+        text = ['No prd table found']
+        df = pd.DataFrame(text)
     return render_template('output.html', tables=[df.to_html(classes='data')], titles=df.columns.values)
 
 
